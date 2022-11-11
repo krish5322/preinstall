@@ -13,7 +13,7 @@ kubectl version --short --client
 curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.17.0/kind-linux-amd64
 chmod +x ./kind
 sudo mv ./kind /usr/local/bin/kind
-echo <<EOF
+cat <<EOF > kind-config.yaml
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
@@ -21,9 +21,9 @@ nodes:
 - role: worker
 - role: worker
 EOF
-> kind-config.yaml
-amazon-linux-extras install java-openjdk11 -y
-java -jar agent.jar -jnlpUrl http://3.88.45.147:8080/computer/azure/jenkins-agent.jnlp -workDir "/opt/build" &
+kind create cluster --name kind-cluster --config kind-config.yaml
+sudo amazon-linux-extras install java-openjdk11 -y
+sudo java -jar agent.jar -jnlpUrl http://3.88.45.147:8080/computer/azure/jenkins-agent.jnlp -workDir "/opt/build" &
 
 
 
